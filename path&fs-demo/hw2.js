@@ -11,7 +11,7 @@ const targetDir = path.join(__dirname,'abc')
 const targetFilePath = path.join(__dirname,'abc/abc.txt')
 
 //监控源文件
-fs.watchFile(sourcePath,(curr,prev)=>{
+fs.watchFile(sourcePath,(curr,prev)=>{    
     fs.exists(sourcePath,(exists)=>{
         if(exists){
             console.log('源文件还存在')

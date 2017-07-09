@@ -19,4 +19,12 @@ accountRouter.get('/vcode',accountCtrl.getVcodeImage)
 //登录逻辑
 accountRouter.post('/login',accountCtrl.login)
 
+//退出
+accountRouter.get('/logout',accountCtrl.logout)
+
+//获取注册页面
+accountRouter.get('/register',accountCtrl.getRegisterPage)
+//用户注册
+accountRouter.post('/register',accountCtrl.register)
+
 module.exports = accountRouter

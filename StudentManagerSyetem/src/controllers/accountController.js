@@ -7,6 +7,8 @@ const fs = require('fs')
 
 const captchapng = require('captchapng')
 
+const databasemanager = require(path.join(__dirname,"../tools/databasemanager.js"))
+
 // const getLoginPage = (req,res)=>{
 //     fs.readFile(path.join(__dirname,'../views/login.html'),(err,data)=>{
 //         //console.log(data.toString())
@@ -58,12 +60,53 @@ exports.login = (req,res)=>{
     const result = {status:1,message:"登录成功"}
 
     //验证码验证
-    console.log("浏览器传递过来的 "+req.body.vcode)
-    console.log("后台内存空间中取得 "+req.session.vcode)
     if(req.body.vcode != req.session.vcode){
         result.status = 0
         result.message = "验证码不正确"
+
+        res.send(result)
+        return
     }
 
-    res.send(result)
+    //数据库的校验
+    databasemanager.findOne('accountInfo',{username:req.body.username,password:req.body.password},(doc)=>{
+        if(doc==null){
+            result.status = 2
+            result.message = "用户名或是密码失败"   
+        }else{//成功
+            //登录成功之后，把用户名存储到我们的session中，后面显示欢迎谁及判断权限都需要
+            req.session.loginedname = req.body.username
+        }
+
+        //返回一定要在异步回调函数中返回
+        res.send(result)
+    })   
+}
+
+exports.logout = (req,res) => {
+    //1.销毁掉req.session.loginedname
+    req.session.loginedname = null
+
+    //2.跳回登录页面
+    res.setHeader("Content-Type","text/html;charset=utf-8")
+    res.end("<script>location.href='/account/login'</script>")
+}
+
+//返回注册页面
+exports.getRegisterPage = (req,res) =>{
+    res.sendFile(path.join(__dirname,'../views/register.html'))
+}
+
+//注册
+exports.register = (req,res) =>{
+    const responseResult = {status:0,message:'注册成功'}
+
+    databasemanager.insertOne('accountInfo',req.body,(result)=>{
+        if(result==null){//新增失败
+            responseResult.status = 1
+            responseResult.message = "注册失败"
+        }
+
+        res.send(responseResult)
+    })
 }

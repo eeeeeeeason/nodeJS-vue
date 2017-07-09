@@ -13,6 +13,17 @@
     "body-parser": "^1.17.2",
     "captchapng": "0.0.1",
     "express": "^4.15.3",
-    "express-session": "^1.15.3"
+    "express-session": "^1.15.3",
+    "mongodb": "^2.2.29",
+    "xtemplate": "^4.7.2",
+    "xtpl": "^3.3.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-clean-css": "^3.5.0",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-uglify": "^3.0.0"
   }
 }

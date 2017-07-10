@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue-resource/1.3.4/vue-resource.js"></script>
+</head>
+<body>
+    <div id="app">
+        <button @click="postLogin">
+            发送POST请求
+        </button>
+    </div>
+</body>
+<script>
+    //emulateJSON用于发送post请求是改变querystring的默认信息形式转化为formdata
+    new Vue({
+        el:'#app',
+        methods:{
+            postLogin:function(){
+                var url = "http://127.0.0.1:3000/postLogin"
+                this.$http.post(url,{username:'afdaf',password:'lisi'},{emulateJSON:true}).then(function(res){
+                    console.log(res.body)
+                },function(err){
+                    console.log(err)
+                })
+            }
+        }    
+    })
+</script>
+</html>

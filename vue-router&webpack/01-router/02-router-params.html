@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!--要出发超链接之后，跳转到哪里去-->
+        <!-- 使用 router-link 组件来导航. -->
+        <router-link to="/newslist">新闻列表</router-link>&nbsp;
+        <router-link to="/goodslist/89">商品详情</router-link>
+
+        <!--呈现需要的组件的地方,相当于占位符-->
+        <router-view></router-view>
+    </div>
+</body>
+    <script>
+        var newsListComponent = Vue.extend({
+            template:"<div>我是新闻列表组件，哈哈哈</div>"
+        })
+
+        //这种方式，是上面代码的完整写法的语法糖
+        var goodsListComponent = {
+            template:"<div>商品列表<br/>，烧鸭，烧鹅，辣条<br/>商品id是:{{ $route.params.goodsId }}</div>",
+            methods:{
+                
+            },
+            data:function(){
+                return {
+                    goodsList:[]
+                }
+            }
+        }
+
+        //设置我们路由与组件的对应关系 === 设置路由规则
+        //设置路由规则的作用就是当触发了某个路由之后，把哪个组件呈现在当前页面上
+        var vueRouter = new VueRouter({
+            routes:[//每一个路由规则就是一个对象
+                {path:'/',redirect:'/newslist'},
+                {path:'/newslist',component:newsListComponent},
+                {path:'/goodslist/:goodsId',component:goodsListComponent}
+            ]
+        })
+
+        var vm = new Vue({
+            router:vueRouter //相当于把我们的路由纳入到我们Vue实例中进行管理
+        }).$mount('#app')
+    </script>
+</html>
